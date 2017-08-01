@@ -36,14 +36,22 @@ namespace GerenciadorComprasWCF
 
             foreach (var produto in pedido.Produtos)
             {
-                var prod = client.ObterProdutos().Where(x => x.Nome == produto.Nome).Single().Quantidade;
+                var ProdutoEmEstoque = client.ObterProdutos().Where(x => x.Nome == produto.Nome).Single().Quantidade;
 
-                if (produto.Quantidade > prod)
+                if (produto.Quantidade > ProdutoEmEstoque)
                 {
-                    produto.Quantidade = prod;
+                    produto.Quantidade = ProdutoEmEstoque;
+                }
+                else if (produto.Quantidade == ProdutoEmEstoque)
+                {
+                   
+                }
+                else if (ProdutoEmEstoque == 0)
+                {
+                    
                 }
 
-                produto.Quantidade = prod - produto.Quantidade;
+                produto.Quantidade = ProdutoEmEstoque - produto.Quantidade;
 
                 client.EditarProduto(produto);
             }
